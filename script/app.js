@@ -20,12 +20,12 @@ let giveAdvice = function(data) {
 } 
 
 changeAdvice
-  .to('.advice-api h1', {x: "-50vw", ease: "back.inOut", duration: .3})
-  .to('.advice-api p', {x: "50vw", ease: "back.inOut", duration: .3}, "<")
-  .to('.advice-api h1', {x: 0, y:"50vh", duration: .05})
-  .to('.advice-api p', {x: 0, y:"50vh", duration: .05}, "<")
-  .to('.advice-api h1', {x: "50vw", y:0, duration: .05})
-  .to('.advice-api p', {x: "-50vw", y:0, duration: .05}, "<")
+  .to('.advice-api h1', {x: "-150vw", ease: "back.inOut", duration: .3})
+  .to('.advice-api p', {x: "150vw", ease: "back.inOut", duration: .3}, "<")
+  .to('.advice-api h1', {x: 0, y:"150vh", duration: .05})
+  .to('.advice-api p', {x: 0, y:"150vh", duration: .05}, "<")
+  .to('.advice-api h1', {x: "150vw", y:0, duration: .05})
+  .to('.advice-api p', {x: "-150vw", y:0, duration: .05}, "<")
   .to('.advice-api h1', {x: 0, ease: "back.inOut", duration: .6})
   .to('.advice-api p', {x: 0, ease: "back.inOut", duration: .6})
 

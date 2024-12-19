@@ -23,6 +23,7 @@ p {font-weight: 800; margin: 0;}
     border-radius: 1rem;
     padding: 2rem 3rem 4rem;
     overflow: hidden;
+    max-width: 95vw;
 }
 
 .advice-api {
@@ -42,9 +43,19 @@ p {font-weight: 800; margin: 0;}
     max-width: 444px;
 }
 
-.divider svg {
-    width: 100%;
-    max-width: 444px;
+.divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.divider svg:first-child {
+    width: auto;
+}
+
+.divider svg:last-child {
+    display: none;
+    width: auto;
 }
 
 button {
@@ -63,4 +74,16 @@ button {
 button:hover {
     cursor: pointer;
     box-shadow: 0px 0px 30px 5px hsl(150, 100%, 66%);
+}
+
+@media (max-width: 570px) {
+    .divider svg:first-child {
+        display: none;
+        width: auto;
+    }
+    
+    .divider svg:last-child {
+        display: block;
+    }
+    
 }
