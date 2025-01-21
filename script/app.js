@@ -22,7 +22,6 @@ const getAdvice = async () => {
         let res = await fetch('https://api.adviceslip.com/advice');
         const data = await res.json();
         giveAdvice(data.slip);
-        rollTL.restart();
     } catch (error) {
         console.error('Error fetching advice:', error);
     }
@@ -41,9 +40,10 @@ exitTl
     .to('.advice-api h1', { x: '150vw', ease: 'back.inOut', duration: 0.5 })
     .to('.advice-api p', { x: '-150vw', ease: 'back.inOut', duration: 0.5 }, '<');
 
-rollTL.to('.main .generator img', { rotate: '720deg', ease: 'back.inOut', duration: 1 });
+rollTL.to('.main .generator img', { rotate: '720deg', ease: 'back.inOut', duration: 1.25 });
 
 button.addEventListener('click', () => {
+    rollTL.restart()
     if (isAdviceVisible) {
         exitTl.restart().then(() => {
             getAdvice().then(() => enterTl.restart());
