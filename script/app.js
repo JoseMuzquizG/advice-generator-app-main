@@ -1,39 +1,54 @@
-const button = document.querySelector('.generator')
-const advice = document.querySelector('.advice-api')
-const rollTL = gsap.timeline({
-    paused: true
-})
-const changeAdvice = gsap.timeline({
-    paused: true
-})
+const button = document.querySelector('.generator');
+const advice = document.querySelector('.advice-api');
 
-const getAdvice = async (advice) => {
-    let res = await fetch ('https://api.adviceslip.com/advice')
-    const data = await res.json()
-    giveAdvice(data.slip)
-}
+let isAdviceVisible = false;
 
+const rollTL = gsap.timeline({ paused: true });
+const enterTl = gsap.timeline({
+    paused: true,
+    onComplete: () => {
+        isAdviceVisible = true;
+    },
+});
+const exitTl = gsap.timeline({
+    paused: true,
+    onComplete: () => {
+        isAdviceVisible = false;
+    },
+});
 
-let giveAdvice = function(data) {
-    advice.querySelector("h1").textContent = `ADVICE ${data.id}`
-    advice.querySelector("p").textContent = `"${data.advice}"`
-} 
+const getAdvice = async () => {
+    try {
+        let res = await fetch('https://api.adviceslip.com/advice');
+        const data = await res.json();
+        giveAdvice(data.slip);
+        rollTL.restart();
+    } catch (error) {
+        console.error('Error fetching advice:', error);
+    }
+};
 
-changeAdvice
-  .to('.advice-api h1', {x: "-150vw", ease: "back.inOut", duration: .3})
-  .to('.advice-api p', {x: "150vw", ease: "back.inOut", duration: .3}, "<")
-  .to('.advice-api h1', {x: 0, y:"150vh", duration: .05})
-  .to('.advice-api p', {x: 0, y:"150vh", duration: .05}, "<")
-  .to('.advice-api h1', {x: "150vw", y:0, duration: .05})
-  .to('.advice-api p', {x: "-150vw", y:0, duration: .05}, "<")
-  .to('.advice-api h1', {x: 0, ease: "back.inOut", duration: .6})
-  .to('.advice-api p', {x: 0, ease: "back.inOut", duration: .6})
+const giveAdvice = (data) => {
+    advice.querySelector('h1').textContent = `ADVICE #${data.id}`;
+    advice.querySelector('p').textContent = `"${data.advice}"`;
+};
 
-rollTL
-    .to('.main .generator img', {rotate: "720deg", ease: "back.inOut", duration: 1})
+enterTl
+    .from('.advice-api h1', { x: '-150vw', ease: 'back.inOut', duration: 0.5 })
+    .from('.advice-api p', { x: '150vw', ease: 'back.inOut', duration: 0.5 }, '<');
 
-button.addEventListener('click', () =>{
-  rollTL.restart()
-  changeAdvice.restart()
-  getAdvice()
-})
+exitTl
+    .to('.advice-api h1', { x: '150vw', ease: 'back.inOut', duration: 0.5 })
+    .to('.advice-api p', { x: '-150vw', ease: 'back.inOut', duration: 0.5 }, '<');
+
+rollTL.to('.main .generator img', { rotate: '720deg', ease: 'back.inOut', duration: 1 });
+
+button.addEventListener('click', () => {
+    if (isAdviceVisible) {
+        exitTl.restart().then(() => {
+            getAdvice().then(() => enterTl.restart());
+        });
+    } else {
+        getAdvice().then(() => enterTl.restart());
+    }
+});
